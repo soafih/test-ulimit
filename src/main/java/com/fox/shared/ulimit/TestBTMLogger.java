@@ -22,31 +22,37 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 public class TestBTMLogger extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor. 
-     */
-    public TestBTMLogger() {
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * Default constructor.
+	 */
+	public TestBTMLogger() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		System.out.println("Servlet: BTM Logger call started.. ");
-		response.setContentType("text/html");
+		// TODO Auto-generated method stub		
 		PrintWriter out = response.getWriter();
-		out.println("<h1> Outoput of BTM Logger Call </h1>");
-		out.println("<h4>"+ processRequest() +"</h4>");
-		System.out.println("Servlet: BTM Logger call done.. ");		
+		try{
+			System.out.println("Servlet: BTM Logger call started.. ");
+			response.setContentType("text/html");			
+			out.println("<h1> Outoput of BTM Logger Call </h1>");
+			out.println("<h4>"+ processRequest() +"</h4>");
+			System.out.println("Servlet: BTM Logger call done.. ");	
+		}catch(Exception e){
+			out.println("<h4>");
+			e.printStackTrace();
+			out.println("</h4>");
+		}
 	}
 
 	static String request = "{\"test\": \"test123\"}";
 	static String url = "https://ms-qaapi-internal.foxinc.com/btm/logger/publish";
 	static String response = "";
-	
-	public static String processRequest() {
+
+	public static String processRequest() throws Exception {
 		System.out.println("In common util - callout processor : received request ");
 		Client client = Client.create();
 		ClientResponse clientResponse = null;
@@ -62,12 +68,12 @@ public class TestBTMLogger extends HttpServlet {
 
 			Builder reqBuilder = webResource.getRequestBuilder();
 			System.out.println("Invoking REST service");
-			response = reqBuilder.type("application/json").method("POST", String.class,
-					request);
-		}catch(Exception e){
-			e.printStackTrace();			
+			response = reqBuilder.type("application/json").method("POST", String.class, request);
+		} catch (Exception e) {
+			e.printStackTrace();
 			response = e.toString();
-			System.out.println("Exception occurred while calling btm logger. "+e);
+			System.out.println("Exception occurred while calling btm logger. " + e);
+			throw e;
 		} finally {
 
 			if (client != null) {
