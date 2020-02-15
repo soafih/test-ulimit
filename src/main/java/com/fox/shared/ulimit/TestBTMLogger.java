@@ -43,7 +43,7 @@ public class TestBTMLogger extends HttpServlet {
 			System.out.println("Servlet: BTM Logger call done.. ");	
 		}catch(Exception e){
 			out.println("<h4>");
-			e.printStackTrace();
+			e.printStackTrace(out);
 			out.println("</h4>");
 		}
 	}
