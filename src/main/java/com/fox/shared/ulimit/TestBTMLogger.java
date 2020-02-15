@@ -49,7 +49,7 @@ public class TestBTMLogger extends HttpServlet {
 	}
 
 	static String request = "{\"test\": \"test123\"}";
-	static String url = "https://ms-qaapi-internal.foxinc.com/btm/logger/publish";
+	static String url = "https://ms-devapi-internal.foxinc.com/btm/logger/publish";
 	static String response = "";
 
 	public static String processRequest() throws Exception {
