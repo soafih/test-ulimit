@@ -35,7 +35,8 @@ public class TestBTMLogger extends HttpServlet {
 	static String[] url = new String[] { "https://ms-devapi-internal.foxinc.com/testlogger",
 			"https://ms-devapi-internal.foxinc.com/btm/logger/publish",
 			"https://ms-qaapi-internal.foxinc.com/testlogger",
-			"https://ms-qaapi-internal.foxinc.com/btm/logger/publish" };
+			"https://ms-qaapi-internal.foxinc.com/btm/logger/publish",
+			"http://qa-int-api.mediacloud.fox:9001/v1/foxipedia/global/api"};
 	static String response = "";
 
 	/**
