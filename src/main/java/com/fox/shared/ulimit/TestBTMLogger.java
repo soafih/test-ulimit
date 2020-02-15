@@ -29,31 +29,41 @@ public class TestBTMLogger extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub		
-		PrintWriter out = response.getWriter();
-		try{
-			System.out.println("Servlet: BTM Logger call started.. ");
-			response.setContentType("text/html");			
-			out.println("<h1> Outoput of BTM Logger Call </h1>");
-			out.println("<h4>"+ processRequest() +"</h4>");
-			System.out.println("Servlet: BTM Logger call done.. ");	
-		}catch(Exception e){
-			out.println("<h4>");
-			e.printStackTrace(out);
-			out.println("</h4>");
-		}
-	}
-
 	static String request = "{\"test\": \"test123\"}";
-//	static String url = "https://ms-devapi-internal.foxinc.com/btm/logger/publish";
-	static String url = "https://ms-devapi-internal.foxinc.com/testlogger";
+	// static String url =
+	// "https://ms-devapi-internal.foxinc.com/btm/logger/publish";
+	static String[] url = new String[] { "https://ms-devapi-internal.foxinc.com/testlogger",
+			"https://ms-devapi-internal.foxinc.com/btm/logger/publish",
+			"https://ms-qaapi-internal.foxinc.com/testlogger",
+			"https://ms-qaapi-internal.foxinc.com/btm/logger/publish" };
 	static String response = "";
 
-	public static String processRequest() throws Exception {
+	/**
+	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		PrintWriter out = response.getWriter();
+		System.out.println("Servlet: BTM Logger call started.. ");
+		response.setContentType("text/html");		
+		for (int i = 0; i < url.length; i++) {
+			try {
+				out.println("<h1> Outoput of BTM Logger Call </h1>");
+				out.println("<h2> Calling: " + url[i]+ "</h2>");
+				out.println("<h5>" + processRequest(url[i]) + "</h5>");
+			} catch (Exception e) {
+				out.println("<h5>");
+				e.printStackTrace(out);
+				out.println("</h5>");
+			}
+			out.println("<br/<br/>-------------------------------------------------------------------<br/><br/>");
+		}
+		System.out.println("Servlet: BTM Logger call done.. ");
+	}
+
+	public static String processRequest(String ep) throws Exception {
 		System.out.println("In common util - callout processor : received request ");
 		Client client = Client.create();
 		ClientResponse clientResponse = null;
@@ -62,7 +72,7 @@ public class TestBTMLogger extends HttpServlet {
 			client.setConnectTimeout(10000);
 			client.setReadTimeout(20000);
 
-			WebResource webResource = client.resource(url);
+			WebResource webResource = client.resource(ep);
 
 			MultivaluedMap<String, String> params = new MultivaluedMapImpl();
 			webResource = webResource.queryParams(params);
